@@ -49,7 +49,17 @@ class _SettingsViewState extends State<SettingsView> {
     return GestureDetector(
   onTap: () async {
     if (index == 0) {
-      Get.to(TermsConditions());
+      const url = 'https://workdrive.zoho.in/file/k5hed31953f3fd4034aa298842746a0853d7e';
+    
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        print('Could not launch $url');
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
     } else if (index == 1) {
     const url = 'https://workdrive.zohopublic.in/file/lhv42107d77e2c4d144f9994c9a3603689a85';
     
@@ -72,18 +82,18 @@ class _SettingsViewState extends State<SettingsView> {
             children: [
               index == 0
                   ? getAssetImage(R.images.terms,
-                      scale: 25, color: Colors.grey)
+                      scale: 25, color: R.colors.whiteColor)
                   : index == 1
                       ? getAssetImage(R.images.privacy,
-                          scale: 25, color: Colors.grey)
+                          scale: 25, color: R.colors.whiteColor)
                       : index == 2
                           ? getAssetImage(R.images.info,
-                              scale: 25, color: Colors.grey)
+                              scale: 25, color: R.colors.whiteColor)
                           : index == 3
                               ? getAssetImage(R.images.share,
-                                  scale: 4, color: Colors.grey)
+                                  scale: 4, color: R.colors.whiteColor)
                               : getAssetImage(R.images.star,
-                                  scale: 25, color: Colors.grey),
+                                  scale: 25, color: R.colors.whiteColor),
               SizedBox(
                 width: FetchPixels.getPixelWidth(10),
               ),
@@ -91,7 +101,7 @@ class _SettingsViewState extends State<SettingsView> {
                 pagesNames[index],
                 style: R.textStyle.regularLato().copyWith(
                       fontSize: FetchPixels.getPixelHeight(18),
-                      color: Colors.grey,
+                      color: R.colors.whiteColor,
                     ),
               ),
             ],
@@ -246,10 +256,15 @@ class _SettingsViewState extends State<SettingsView> {
                     vertical: FetchPixels.getPixelHeight(10),
                   ),
                   itemCount: pagesNames.length,
+                  
+                  //add font color 
+
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(top: 25),
+                      
                       child: pagesName(index),
+
                     );
                   },
                 ),
