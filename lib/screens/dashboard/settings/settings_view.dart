@@ -82,18 +82,18 @@ class _SettingsViewState extends State<SettingsView> {
             children: [
               index == 0
                   ? getAssetImage(R.images.terms,
-                      scale: 25, color: R.colors.whiteColor)
+                      scale: 25, color: Colors.grey)
                   : index == 1
                       ? getAssetImage(R.images.privacy,
-                          scale: 25, color: R.colors.whiteColor)
+                          scale: 25, color: Colors.grey)
                       : index == 2
                           ? getAssetImage(R.images.info,
-                              scale: 25, color: R.colors.whiteColor)
+                              scale: 25, color: Colors.grey )
                           : index == 3
                               ? getAssetImage(R.images.share,
-                                  scale: 4, color: R.colors.whiteColor)
+                                  scale: 4, color:Colors.grey )
                               : getAssetImage(R.images.star,
-                                  scale: 25, color: R.colors.whiteColor),
+                                  scale: 25, color:Colors.grey ),
               SizedBox(
                 width: FetchPixels.getPixelWidth(10),
               ),
@@ -126,7 +126,8 @@ class _SettingsViewState extends State<SettingsView> {
     title: Text(
       "Settings",
       style: R.textStyle.mediumLato().copyWith(
-        fontSize: FetchPixels.getPixelHeight(17),
+        fontSize: FetchPixels.getPixelHeight(21),
+        fontWeight: FontWeight.bold,
       ),
     ),
     actions: [
@@ -172,6 +173,7 @@ class _SettingsViewState extends State<SettingsView> {
                     'Notifications',
                     style: R.textStyle.regularLato().copyWith(
                           fontSize: FetchPixels.getPixelHeight(17),
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
                   SizedBox(
@@ -189,15 +191,17 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
               SizedBox(
-                height: FetchPixels.getPixelHeight(15),
+                height: FetchPixels.getPixelHeight(25),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Dark Mode',
+                    'Theme',
                     style: R.textStyle.regularLato().copyWith(
                           fontSize: FetchPixels.getPixelHeight(17),
+                          fontWeight: FontWeight.bold,
+
                         ),
                   ),
                   SizedBox(
@@ -236,9 +240,11 @@ class _SettingsViewState extends State<SettingsView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'About CoinCrux',
+                      'ABOUT COINCRUX',
                       style: R.textStyle.mediumLato().copyWith(
-                            fontSize: FetchPixels.getPixelHeight(18),
+                            fontSize: FetchPixels.getPixelHeight(15),
+                            color: Colors.grey,
+
                           ),
                     ),
                     SizedBox(height: 5), // Adjust spacing as needed
@@ -253,7 +259,7 @@ class _SettingsViewState extends State<SettingsView> {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(
-                    vertical: FetchPixels.getPixelHeight(10),
+                    vertical: FetchPixels.getPixelHeight(5),
                   ),
                   itemCount: pagesNames.length,
                   
