@@ -80,18 +80,6 @@ class _NewsFeedViewState extends State<NewsFeedView> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // String title = "Feed";
-
-    List<NewsModel> newsList = Provider.of<NewsProvider>(context).newsList;
-    List<String> refId = Provider.of<NewsProvider>(context).refId;
-
-    var auth = FirebaseAuth.instance;
-    var firestore = FirebaseFirestore.instance;
-
-    var controller = PageController(initialPage: widget.index ?? 0);
-    final customImagesCount = (newsList.length / 5).floor;
     Future<void> _refreshData() async {
       setState(() {
         isLoading = true;
@@ -99,7 +87,19 @@ class _NewsFeedViewState extends State<NewsFeedView> {
       startLoadingTimer();
       await Provider.of<NewsProvider>(context, listen: false).listenToNews();
     }
+  @override
+  Widget build(BuildContext context) {
+    // String title = "Feed";
 
+    
+List<NewsModel> newsList = Provider.of<NewsProvider>(context).newsList;
+    List<String> refId = Provider.of<NewsProvider>(context).refId;
+
+    var auth = FirebaseAuth.instance;
+    var firestore = FirebaseFirestore.instance;
+
+    var controller = PageController(initialPage: widget.index ?? 0);
+    final customImagesCount = (newsList.length / 5).floor;
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: PreferredSize(
