@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:coincrux/resources/colors.dart';
 import 'package:coincrux/resources/resources.dart';
 import 'package:coincrux/routes/app_pages.dart';
@@ -6,7 +7,9 @@ import 'package:coincrux/routes/app_routes.dart';
 import 'package:coincrux/screens/auth/provider/auth_provider.dart';
 import 'package:coincrux/screens/dashboard/news_feed/provider/news_provider.dart';
 import 'package:coincrux/screens/dashboard/settings/themeprovider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/assertions.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,14 +18,18 @@ import 'package:flutter/cupertino.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    // Handle Firebase initialization errors
-    print('Firebase initialization error: $e');
-    // Optionally, show an error message to the user
-    // and handle the situation gracefully
-  }
+  
+  await Firebase.initializeApp();
+  
+  // Firebase Crashlytics error handling for Flutter errors
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  // Handling uncaught asynchronous errors with Crashlytics
+  // FlutterExceptionHandler? originalOnError = FlutterError.onError;
+  // FlutterError.onError = (FlutterErrorDetails errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+  //   originalOnError(errorDetails);
+  // };
 
   runApp(
     MultiProvider(

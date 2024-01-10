@@ -15,6 +15,8 @@ import 'package:coincrux/screens/dashboard/settings/pages/terms_condition.dart';
 import 'package:coincrux/screens/dashboard/settings/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,15 +47,25 @@ class _SettingsViewState extends State<SettingsView> {
 
   Widget pagesName(index) {
     return GestureDetector(
-      onTap: () {
-        index == 0
-            ? Get.to(TermsConditions())
-            : index == 1
-                ? Get.to(PrivacyPolicy())
-                : index == 2
-                    ? Get.to(AboutUs())
-                    : null;
-      },
+  onTap: () async {
+    if (index == 0) {
+      Get.to(TermsConditions());
+    } else if (index == 1) {
+    const url = 'https://workdrive.zohopublic.in/file/lhv42107d77e2c4d144f9994c9a3603689a85';
+    
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        print('Could not launch $url');
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
+  } else if (index == 2) {
+      Get.to(AboutUs());
+    }
+  },
       child: Column(
         children: [
           Row(
@@ -202,40 +214,13 @@ class _SettingsViewState extends State<SettingsView> {
 
              
              
-GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProfileView()),
-    );
-  },
-  child: Container(
-    alignment: Alignment.centerLeft,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Profile',
-          style: R.textStyle.mediumLato().copyWith(
-            fontSize: FetchPixels.getPixelHeight(18),
-          ),
-        ),
-        SizedBox(height: 5), // Adjust spacing as needed
 
-        // Divider widget for the separator line
-        Divider(
-          color: Colors.grey.withOpacity(0.4), // Set the color of the line
-          thickness: 1, // Set the thickness of the line
-          endIndent: 16, // Adjust the end indent if needed
-        ),
-      ],
-    ),
-  ),
-),
+
+    
               SizedBox(
                 height: FetchPixels.getPixelHeight(25),
               ),
-              Container(
+        Container(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,6 +237,7 @@ GestureDetector(
           
                   ],
                 ),
+
               ),
               
               Expanded(
@@ -268,8 +254,17 @@ GestureDetector(
                   },
                 ),
               ),
+
+              SizedBox(
+                height: FetchPixels.getPixelHeight(25),
+              ),
+
+
             ],
           ),
-        ));
+        ),
+        );
+
+
   }
 }
