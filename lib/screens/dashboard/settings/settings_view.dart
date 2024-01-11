@@ -197,7 +197,7 @@ class _SettingsViewState extends State<SettingsView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Theme',
+                    'Dark mode',
                     style: R.textStyle.regularLato().copyWith(
                           fontSize: FetchPixels.getPixelHeight(17),
                           fontWeight: FontWeight.bold,
