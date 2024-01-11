@@ -58,7 +58,8 @@ class _ProfileViewState extends State<ProfileView> {
               title: Text(
                 "Profile",
                 style: R.textStyle.mediumLato().copyWith(
-                      fontSize: FetchPixels.getPixelHeight(20),
+                      fontSize: FetchPixels.getPixelHeight(21),
+                      fontWeight: FontWeight.bold,
                     ),
               ),
               actions: [
@@ -207,16 +208,16 @@ class _ProfileViewState extends State<ProfileView> {
                                       ));
                                 },
                               ),
-                              SizedBox(height: FetchPixels.getPixelHeight(75)),
+                              SizedBox(height: FetchPixels.getPixelHeight(20)),
                               Text(
-                                auth.userM.name ?? '',
+                                auth.userM.name ?? 'User Name',
                                 style: R.textStyle.mediumLato().copyWith(
                                       fontSize: FetchPixels.getPixelHeight(17),
                                     ),
                               ),
                               SizedBox(height: FetchPixels.getPixelHeight(3)),
                               Text(
-                                auth.userM.phone ?? '',
+                                auth.userM.phone ?? 'Phone Number',
                                 style: R.textStyle.regularLato().copyWith(
                                       fontSize: FetchPixels.getPixelHeight(14),
                                     ),
@@ -277,47 +278,35 @@ class _ProfileViewState extends State<ProfileView> {
           deleteAccount();
         }
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 2,
-              blurRadius: 6,
-              offset: Offset(0, 4),
-            ),
-          ],
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF3A7BD5).withOpacity(0.8),
-              Color(0xFF3A7BD5).withOpacity(0.5),
-              Color(0xFF2196F3).withOpacity(0.3)
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: FetchPixels.getPixelWidth(40),
+                height: FetchPixels.getPixelHeight(25),
+                child: index == 0
+                    ? getAssetImage(R.images.save, scale: 45, color: R.colors.theme)
+                    : index == 1
+                        ? getAssetImage(R.images.like, scale: 45, color: R.colors.theme)
+                        : index == 2
+                            ? getAssetImage(R.images.feed, scale: 45, color: R.colors.theme,)
+                            : getAssetImage(R.images.delete, scale: 45, color: R.colors.theme),
+              ),
+              SizedBox(
+                width: FetchPixels.getPixelWidth(10),
+              ),
+              Text(
+                pagesNames[index],
+                style: R.textStyle.regularLato().copyWith(
+
+                      fontSize: FetchPixels.getPixelHeight(19),
+                      // fontWeight: FontWeight.bold,
+                    ),
+              ),
             ],
           ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: FetchPixels.getPixelWidth(35),
-              height: FetchPixels.getPixelHeight(30),
-              child: getAssetImage(images[index], scale: 30),
-            ),
-            SizedBox(width: FetchPixels.getPixelWidth(10)),
-            Text(
-              pagesNames[index],
-              style: R.textStyle.regularLato().copyWith(
-                    fontSize: FetchPixels.getPixelHeight(16),
-                    color: Color.fromARGB(255, 120, 120, 120),
-                  ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
