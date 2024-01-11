@@ -16,18 +16,28 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../../../../resources/resources.dart';
 
+
 class ProfileView extends StatefulWidget {
+  
   ProfileView({Key? key}) : super(key: key);
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
+  
 }
+//creating a query to display user name and phone number
+
+
 
 class _ProfileViewState extends State<ProfileView> {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
+    String? userName;
+   String? phoneNumber;
+   String? userimage;
+  
 
   List<String> pagesNames = [
     "Bookmarks",
@@ -42,9 +52,32 @@ class _ProfileViewState extends State<ProfileView> {
     R.images.feed,
     R.images.delete,
   ];
+   @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+   Future<void> fetchUserData() async {
+    try {
+      DocumentSnapshot userSnapshot = await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .get();
+
+      if (userSnapshot.exists) {
+        userName = userSnapshot['name'] ?? '';
+        phoneNumber = userSnapshot['phone'] ?? '';
+         
+      }
+    } catch (error) {
+      print('Error fetching user data: $error');
+    }
+  }
+   
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<AuthProviderApp>(
       builder: (context, auth, child) {
         return Scaffold(
@@ -77,11 +110,11 @@ class _ProfileViewState extends State<ProfileView> {
               ],
               leading: IconButton(
                 onPressed: () {
-                  HomeView();
+                  print(auth.dashCurrentPage);
 
                 },
                 icon: Icon(
-                  Icons.arrow_back,
+                  Icons.arrow_back_ios_new_outlined,
                   color: R.colors.blackColor,
                 ),
               ),
@@ -109,52 +142,44 @@ class _ProfileViewState extends State<ProfileView> {
                               Consumer<AuthProviderApp>(
                                 builder: (context, auth, child) {
                                   return Container(
-                                      height: FetchPixels.getPixelHeight(125),
+                                      height: FetchPixels.getPixelHeight(140),
                                       width: FetchPixels.getPixelWidth(125),
                                       child: Stack(
                                         children: [
+                                         Align(
+  alignment: Alignment.center,
+child: auth.userM.image == null
+    ? Container(
+        height: FetchPixels.getPixelHeight(150),
+        width: FetchPixels.getPixelWidth(150),
+
+        decoration: BoxDecoration(
+          color: R.colors.imageBgColor,
+    borderRadius: BorderRadius.circular(10),  // Adjust the radius as needed
+          image: DecorationImage(
+            image: AssetImage('assets/images/defaultimage.jpg'),
+
+            fit: BoxFit.fill,
+          ),
+        ),
+      )
+    : Container(
+        height: FetchPixels.getPixelHeight(100),
+        width: FetchPixels.getPixelWidth(100),
+        decoration: BoxDecoration(
+          color: R.colors.imageBgColor,
+          image: DecorationImage(
+            image: NetworkImage(auth.userM.image!),
+            fit: BoxFit.fill,
+          ),
+        ),
+      ),
+),
                                           Align(
-                                            alignment: Alignment.center,
-                                            child: auth.userM.image == null ||
-                                                    auth.userM.image!.isEmpty
-                                                ? Container(
-                                                    height: FetchPixels
-                                                        .getPixelHeight(125),
-                                                    width: FetchPixels
-                                                        .getPixelWidth(125),
-                                                    decoration: BoxDecoration(
-                                                      color: R.colors
-                                                              .isDarkTheme
-                                                          ? R.colors.whiteColor
-                                                              .withOpacity(0.1)
-                                                          : R.colors.blackColor
-                                                              .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  25)),
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    height: FetchPixels
-                                                        .getPixelHeight(100),
-                                                    width: FetchPixels
-                                                        .getPixelWidth(100),
-                                                    decoration: BoxDecoration(
-                                                        color: R.colors
-                                                            .imageBgColor,
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    5)),
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                auth.userM
-                                                                    .image!),
-                                                            fit: BoxFit.fill)),
-                                                  ),
-                                          ),
-                                          Material(
+                                              alignment: Alignment.bottomRight,
+                                              child:
+
+                                         Material(
                                               color: Colors.transparent,
 
                                               // Replace 'alignment' with an existing named parameter or define a new named parameter
@@ -195,7 +220,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                     padding: EdgeInsets.all(3),
                                                     decoration: BoxDecoration(
                                                         color: R
-                                                            .colors.whiteColor
+                                                            .colors.transparent
                                                             .withOpacity(0.1),
                                                         shape: BoxShape.circle),
                                                     child: Icon(
@@ -204,21 +229,24 @@ class _ProfileViewState extends State<ProfileView> {
                                                           R.colors.whiteColor,
                                                     )),
                                               ))
+                                          ),
                                         ],
+
                                       ));
                                 },
                               ),
                               SizedBox(height: FetchPixels.getPixelHeight(20)),
                               Text(
-                                auth.userM.name ?? 'User Name',
+                        userName != null ? userName! : '',
+
                                 style: R.textStyle.mediumLato().copyWith(
                                       fontSize: FetchPixels.getPixelHeight(17),
                                     ),
                               ),
                               SizedBox(height: FetchPixels.getPixelHeight(3)),
                               Text(
-                                auth.userM.phone ?? 'Phone Number',
-                                style: R.textStyle.regularLato().copyWith(
+                        phoneNumber != null ? phoneNumber! : '',
+                    style: R.textStyle.regularLato().copyWith(
                                       fontSize: FetchPixels.getPixelHeight(14),
                                     ),
                               ),
